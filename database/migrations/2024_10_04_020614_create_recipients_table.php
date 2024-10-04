@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recipient', function (Blueprint $table) {
-            $table->foreignId('id') // Create the foreign key column
-                  ->constrained('capsules','capsule_id'); 
+        Schema::create('recipients', function (Blueprint $table) {
+            $table->id();
+            
+            $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('recipients');
     }
 };

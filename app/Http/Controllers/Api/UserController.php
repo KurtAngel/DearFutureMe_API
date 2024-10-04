@@ -12,12 +12,12 @@ class UserController
 {
     public function register(Request $request) {
         $user = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'age' => 'required|integer'
         ]);
-    
+        
         $user = User::create([
             'name' => $user['name'],
             'email' => $user['email'],
@@ -25,10 +25,15 @@ class UserController
             'age' => $user['age']
         ]);
 
-        return response()->json($user, 201);
+        $token = $user->createToken('auth:sanctum')->plainTextToken;
+        
+        return response()->json([
+            'data' => $user,
+            'token' => $token
+        ], 201);
     }
 
-    public function index(Request $request) {
+    public function index() {
         $users = User::get(); // Retrieve all users
         return UserResource::collection($users);
     }
@@ -40,23 +45,7 @@ class UserController
 
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
-    // public function login(Request $request) {
-    //     $user = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users',
-    //         'password' => 'required|string|min:6',
-    //         'age' => 'required|integer'
-    //     ]);
 
-    //     $user = User::get([
-    //         'name' => $user['name'],
-    //         'email' => $user['email'],
-    //         'password' => Hash::make($user['password']),
-    //         'age' => $user['age']
-    //     ]);
-
-    //     return response()->json($user, 201);
-    // }
     public function login(Request $request) {
         // Validate the incoming request
         $validatedData = $request->validate([
@@ -71,14 +60,14 @@ class UserController
         if (!$user || !Hash::check($validatedData['password'], $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-    
+
         // Optionally, create a token for the user (if using API tokens)
         $token = $user->createToken('auth:sanctum')->plainTextToken;
     
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
-            'token' => $token // Uncomment this line if you return the token
+            'token' => $token
         ], 200);
     }
 }

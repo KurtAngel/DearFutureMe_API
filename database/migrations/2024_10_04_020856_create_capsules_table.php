@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('capsules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                  ->constrained('users','id');
             $table->string('title');
             $table->string('message');
             $table->text('content')->nullable();
-            $table->timestamp('opens_at');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('capsules');
     }
 };

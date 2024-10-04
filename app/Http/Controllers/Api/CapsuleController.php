@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Capsule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CapsuleResource;
 
 class CapsuleController
@@ -14,13 +15,14 @@ class CapsuleController
             'title' => 'required|max:50|string',
             'message' => 'required|max:500|string'
         ]);
-        $capsule = Capsule::create([
+
+        $capsules = Capsule::create([
             'title' => $capsule['title'],
             'message' => $capsule['message']
         ]);
 
 
-        return response()->json($capsule, 200);   
+        return response()->json($capsules, 200);   
     }
     
     public function show() {
@@ -30,12 +32,6 @@ class CapsuleController
     }
 
     public function delete($id) {
-        // $capsule = Capsule::find($id);
-        // // return User::delete();
-        // $capsule->delete(); // Delete the specific user
-
-        // return response()->json(['message' => 'Capsule deleted successfully'], 200);
-
         try {
             // Find the capsule by ID
             $capsule = Capsule::find($id);
@@ -51,13 +47,13 @@ class CapsuleController
             return response()->json(['message' => 'Capsule deleted successfully'], 200);
         } catch (\Exception $e) {
             // Log the exception if needed
-            \Log::error('Error deleting capsule: ' . $e->getMessage());
+            Log::error('Error deleting capsule: ' . $e->getMessage());
     
             return response()->json(['message' => 'An error occurred while deleting the capsule'], 500);
         }
     }
 
     public function update() {
-
+        
     }
 }
