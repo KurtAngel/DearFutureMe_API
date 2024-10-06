@@ -15,7 +15,7 @@ class UserController
             'name' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'age' => 'required|integer'
+            'age' => 'nullable|integer'
         ]);
         
         $user = User::create([
@@ -25,7 +25,7 @@ class UserController
             'age' => $user['age']
         ]);
 
-        $token = $user->createToken('auth:sanctum')->plainTextToken;
+        $token = $user->createToken('Personal Access Token')->plainTextToken;
         
         return response()->json([
             'data' => $user,
@@ -62,12 +62,28 @@ class UserController
         }
 
         // Optionally, create a token for the user (if using API tokens)
-        $token = $user->createToken('auth:sanctum')->plainTextToken;
+        $token = $user->createToken('Personal Access Token')->plainTextToken;
     
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
             'token' => $token
         ], 200);
+    }
+
+    public function logout(Request $request) {
+        $user = User::where('id', $request->user()->id)->first();
+
+        if($user) {
+            $user->tokens()->delete();
+
+            return response()->json([
+                'message' => 'Logged out Successfully'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
     }
 }

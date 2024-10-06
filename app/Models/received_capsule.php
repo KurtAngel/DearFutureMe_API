@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class capsules extends Model
+class received_capsule extends Model
 {
     use HasFactory;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
     protected $fillable = [
-        'title',
-        'message'
+        
     ];
+    
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class);
     }
 }

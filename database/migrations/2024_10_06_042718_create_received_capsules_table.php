@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('capsules', function (Blueprint $table) {
+        Schema::create('received_capsules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
-            $table->string('title');
-            $table->string('message');
-            $table->text('content')->nullable();
+            $table->unsignedBigInteger('received_capsule_id');  
+            $table->foreign('received_capsule_id')
+                  ->references('id')->on('capsules');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('capsules');
+        Schema::dropIfExists('received_capsules');
     }
 };

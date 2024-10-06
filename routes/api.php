@@ -23,17 +23,15 @@ Route::post('/user', function (Request $request) {
     ]);
     return response()->json($user, 201);
 })->middleware('auth:sanctum');
-// ->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->group(function () {
-    
-    Route::post('/create', [CapsuleController::class, 'create']);
-    Route::post('/capsule', [CapsuleController::class, 'show']);
-    Route::delete('/{id}', [CapsuleController::class, 'delete']);
-});
 
 Route::post('/register', [UserController::class, 'register']);
-Route::get('/', [UserController::class, 'index']);
 Route::post('/login', [UserController::class, 'login']);
-Route::delete('/sdfsdf/{id}', [UserController::class, 'destroy']);
 
-// Route::apiResource('/', UserController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout',[UserController::class, 'logout']);
+});
+
+Route::apiResource('capsules', CapsuleController::class);
+Route::post('capsules/send', [CapsuleController::class, 'send']);
+Route::get('/', [UserController::class, 'index']);
+Route::delete('/f/{id}', [UserController::class, 'destroy']);

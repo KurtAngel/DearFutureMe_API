@@ -16,11 +16,11 @@ class CapsuleResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id' => $this->capsule_id,
+            'id' => $this->id,
             'title' => $this->title, 
             'message' => $this->message, 
             'created_at' => $this->created_at,
-            'opens_at' => $this->opens_at
+            'updated_at' => $this->updated_at
         ];
     }
 }

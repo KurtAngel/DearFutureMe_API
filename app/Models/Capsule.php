@@ -11,6 +11,11 @@ class Capsule extends Model
 
     protected $fillable = [
         'title',
-        'message'
+        'message',
+        'content'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
