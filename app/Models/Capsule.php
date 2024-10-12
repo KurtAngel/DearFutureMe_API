@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Capsule extends Model
 {
     use HasFactory;
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'title',
         'message',
-        'content'
+        'content',
+        'receiver_email',
+        'schedule_open_at'
     ];
 
     public function user() {

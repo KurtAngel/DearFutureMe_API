@@ -21,14 +21,16 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'age'
+        'password'
     ];
 
     public function capsules() {
-        return $this->hasMany(capsules::class);
+        return $this->hasMany(Capsule::class);
     }
 
+    public function receivedCapsule() {
+        return $this->hasMany(ReceivedCapsule::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

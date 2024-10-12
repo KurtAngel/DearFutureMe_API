@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class capsules extends Model
+class ReceivedCapsule extends Model
 {
     use HasFactory;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
+    protected $table = 'receivedcapsules';
     protected $fillable = [
         'title',
-        'message'
+        'message',
+        'content',
+        'receiver_email',
+        'scheduled_open_at'
     ];
+    
     public function user() {
         return $this->belongsTo(User::class);
     }

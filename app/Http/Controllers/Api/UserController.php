@@ -14,27 +14,26 @@ class UserController
         $user = $request->validate([
             'name' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'age' => 'nullable|integer'
+            'password' => 'required|string|min:6'
         ]);
         
         $user = User::create([
             'name' => $user['name'],
             'email' => $user['email'],
-            'password' => Hash::make($user['password']),
-            'age' => $user['age']
+            'password' => Hash::make($user['password'])
         ]);
 
         $token = $user->createToken('Personal Access Token')->plainTextToken;
         
         return response()->json([
+            'status' => 'Registered Successfully',
             'data' => $user,
             'token' => $token
         ], 201);
     }
 
     public function index() {
-        $users = User::get(); // Retrieve all users
+        $users = User::get(); // Retrieve all users     
         return UserResource::collection($users);
     }
 
@@ -50,7 +49,7 @@ class UserController
         // Validate the incoming request
         $validatedData = $request->validate([
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6'
         ]);
     
         // Retrieve the user by email
@@ -85,5 +84,9 @@ class UserController
                 'message' => 'User not found'
             ], 404);
         }
+    }
+
+    public function usernameView(User $user) {
+        return response()->json($user['name']);
     }
 }

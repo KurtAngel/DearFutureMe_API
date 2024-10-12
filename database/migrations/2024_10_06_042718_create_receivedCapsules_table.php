@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('capsules', function (Blueprint $table) {
+        Schema::create('receivedCapsules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                   ->constrained()
@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('message');
             $table->text('content')->nullable();
-            $table->string('receiver_email')->nullable();
+            $table->string('receiver_email');
             $table->foreign('receiver_email')
                 ->references('email')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->dateTime('scheduled_open_at')->nullable();
+            $table->dateTime('scheduled_open_at');
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('capsules');
+        Schema::dropIfExists('receivedCapsules');
     }
 };
